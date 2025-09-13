@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="header-section">
+        <h2>Predict House Prices</h2>
+        <p>Enter the house details below to get price predictions from our trained models.</p>
+    </div>
+
+    {% if error %}
+    <div class="error-message">
+        <p>⚠️ {{ error }}</p>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <form method="POST" action="{{ url_for('predict') }}" class="prediction-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="area">Area (sq ft):</label>
+                    <input type="number" name="area" id="area" required min="100" max="10000" 
+                           value="{{ input_data.area if input_data else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="bedrooms">Bedrooms:</label>
+                    <input type="number" name="bedrooms" id="bedrooms" required min="1" max="10" 
+                           value="{{ input_data.bedrooms if input_data else '' }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bathrooms">Bathrooms:</label>
+                    <input type="number" name="bathrooms" id="bathrooms" required min="1" max="10" 
+                           value="{{ input_data.bathrooms if input_data else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="floors">Floors:</label>
+                    <input type="number" name="floors" id="floors" required min="1" max="5" 
+                           value="{{ input_data.floors if input_data else '' }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="yearbuilt">Year Built:</label>
+                    <input type="number" name="yearbuilt" id="yearbuilt" required min="1900" max="2025" 
+                           value="{{ input_data.yearbuilt if input_data else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <select name="location" id="location" required>
+                        <option value="">Select Location</option>
+                        <option value="Urban" {{ 'selected' if input_data and input_data.location == 'Urban' else '' }}>Urban</option>
+                        <option value="Suburban" {{ 'selected' if input_data and input_data.location == 'Suburban' else '' }}>Suburban</option>
+                        <option value="Rural" {{ 'selected' if input_data and input_data.location == 'Rural' else '' }}>Rural</option>
+                        <option value="Downtown" {{ 'selected' if input_data and input_data.location == 'Downtown' else '' }}>Downtown</option>
+                        <option value="Countryside" {{ 'selected' if input_data and input_data.location == 'Countryside' else '' }}>Countryside</option>
+                        <option value="Seaside" {{ 'selected' if input_data and input_data.location == 'Seaside' else '' }}>Seaside</option>
+                        <option value="Mountain" {{ 'selected' if input_data and input_data.location == 'Mountain' else '' }}>Mountain</option>
+                        <option value="Industrial" {{ 'selected' if input_data and input_data.location == 'Industrial' else '' }}>Industrial</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="condition">Condition:</label>
+                    <select name="condition" id="condition" required>
+                        <option value="">Select Condition</option>
+                        <option value="Excellent" {{ 'selected' if input_data and input_data.condition == 'Excellent' else '' }}>Excellent</option>
+                        <option value="Good" {{ 'selected' if input_data and input_data.condition == 'Good' else '' }}>Good</option>
+                        <option value="Fair" {{ 'selected' if input_data and input_data.condition == 'Fair' else '' }}>Fair</option>
+                        <option value="Poor" {{ 'selected' if input_data and input_data.condition == 'Poor' else '' }}>Poor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="garage">Garage:</label>
+                    <select name="garage" id="garage" required>
+                        <option value="">Select Option</option>
+                        <option value="Yes" {{ 'selected' if input_data and input_data.garage == 'Yes' else '' }}>Yes</option>
+                        <option value="No" {{ 'selected' if input_data and input_data.garage == 'No' else '' }}>No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit" class="btn-primary">🔮 Predict Price</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="info-section">
+        <div class="card">
+            <h3>About Our Models</h3>
+            <p>We use three different machine learning models to predict house prices:</p>
+            <ul>
+                <li><strong>Linear Regression</strong> - A baseline model that finds linear relationships</li>
+                <li><strong>Random Forest</strong> - An ensemble method that combines multiple decision trees</li>
+                <li><strong>Gradient Boosting</strong> - An advanced ensemble technique for better accuracy</li>
+            </ul>
+            <p>The system automatically selects the best-performing model based on validation metrics.</p>
+        </div>
+    </div>
+
+    <div class="sample-input">
+        <div class="card">
+            <h3>Sample Input for Testing</h3>
+            <div class="sample-data">
+                <p><strong>Area:</strong> 1600 sq ft</p>
+                <p><strong>Bedrooms:</strong> 3</p>
+                <p><strong>Bathrooms:</strong> 2</p>
+                <p><strong>Floors:</strong> 2</p>
+                <p><strong>Year Built:</strong> 2005</p>
+                <p><strong>Location:</strong> Suburban</p>
+                <p><strong>Condition:</strong> Good</p>
+                <p><strong>Garage:</strong> Yes</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
